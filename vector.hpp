@@ -16,33 +16,33 @@ private:
 	private:
 		typedef MyVector_Iterator<value_t> iterator;
 
-		pointer data;
+		pointer data_;
 	public:
-		MyVector_Iterator<value_t>() : data(nullptr) {}
-		MyVector_Iterator<value_t>(pointer pos) : data(pos) {}
-		MyVector_Iterator<value_t>(const iterator& other) : data(other.data) {}
+		MyVector_Iterator<value_t>() : data_(nullptr) {}
+		MyVector_Iterator<value_t>(pointer pos) : data_(pos) {}
+		MyVector_Iterator<value_t>(const iterator& other) : data_(other.data_) {}
 		~MyVector_Iterator<value_t>() {}
 
-		iterator& operator=(iterator iter) { data = iter.data; return *this; }
-		iterator& operator=(pointer pos) { data = pos; return *this; }
-		iterator  operator++(int) { return data++; }
-		iterator& operator++() { ++data; return *this; }
-		iterator  operator--(int) { return data--; }
-		iterator& operator--() { --data; return *this; }
-		reference operator* () { return *data; }
-		pointer   operator->() { return data; }
-		iterator  operator+ (difference_type v) { return data + v; }
-		iterator  operator- (difference_type v) { return data - v; }
-		difference_type  operator+ (iterator other) { return data + other.data; }
-		difference_type  operator- (iterator other) { return data - other.data; }
-		iterator& operator+= (difference_type v) { data += v; return *this; }
-		iterator& operator-= (difference_type v) { data -= v; return *this; }
-		bool	  operator< (const iterator& other) { return (data - other.data) < 0; }
-		bool	  operator> (const iterator& other) { return (data - other.data) > 0; }
-		bool      operator==(const iterator& rhs) const { return data == rhs.data; }
-		bool      operator!=(const iterator& rhs) const { return data != rhs.data; }
-		bool	  operator<=(const iterator& other) const { return (data == other.data) || (data < other.data); }
-		bool	  operator>=(const iterator& other) const { return (data == other.data) || (data > other.data); }
+		iterator& operator=(iterator iter) { data_ = iter.data_; return *this; }
+		iterator& operator=(pointer pos) { data_ = pos; return *this; }
+		iterator  operator++(int) { iterator temp(data_++); return temp; }
+		iterator& operator++() { ++data_; return *this; }
+		iterator  operator--(int) { iterator temp(data_--); return temp; }
+		iterator& operator--() { --data_; return *this; }
+		reference operator* () { return *data_; }
+		pointer   operator->() { return data_; }
+		iterator  operator+ (difference_type v) { return data_ + v; }
+		iterator  operator- (difference_type v) { return data_ - v; }
+		difference_type  operator+ (iterator other) { return data_ + other.data_; }
+		difference_type  operator- (iterator other) { return data_ - other.data_; }
+		iterator& operator+= (difference_type v) { data_ += v; return *this; }
+		iterator& operator-= (difference_type v) { data_ -= v; return *this; }
+		bool	  operator< (const iterator& other) { return (data_ - other.data_) < 0; }
+		bool	  operator> (const iterator& other) { return (data_ - other.data_) > 0; }
+		bool      operator==(const iterator& rhs) const { return data_ == rhs.data_; }
+		bool      operator!=(const iterator& rhs) const { return data_ != rhs.data_; }
+		bool	  operator<=(const iterator& other) const { return (data_ == other.data_) || (data_ < other.data_); }
+		bool	  operator>=(const iterator& other) const { return (data_ == other.data_) || (data_ > other.data_); }
 	};
 
 	template<typename T>
@@ -51,40 +51,42 @@ private:
 	public:
 		typedef T value_t;
 		typedef value_t* pointer;
+		typedef value_t const * const_pointer;
 		typedef value_t& reference;
+		typedef value_type const& const_reference;
 		typedef std::ptrdiff_t difference_type;
 	private:
 		typedef MyVector_Const_Iterator<value_t> const_iterator;
 		typedef MyVector_Iterator<value_t> iterator;
 
-		pointer data;
+		pointer data_;
 	public:
-		MyVector_Const_Iterator<value_t>() : data(nullptr) {}
-		MyVector_Const_Iterator<value_t>(pointer pos) : data(pos) {}
-		MyVector_Const_Iterator<value_t>(const const_iterator& other) : data(other.data) {}
-		MyVector_Const_Iterator<value_t>(MyVector_Iterator<value_t> iter) : data(iter.operator->()) {}
+		MyVector_Const_Iterator<value_t>() : data_(nullptr) {}
+		MyVector_Const_Iterator<value_t>(pointer pos) : data_(pos) {}
+		MyVector_Const_Iterator<value_t>(const const_iterator& other) : data_(other.data_) {}
+		MyVector_Const_Iterator<value_t>(MyVector_Iterator<value_t> iter) : data_(iter.operator->()) {}
 		~MyVector_Const_Iterator<value_t>() {}
 
-		const_iterator& operator=(const_iterator con) { data = con.data; return *this; }
-		const_iterator& operator=(pointer pos) { data = pos; return *this; }
-		const_iterator  operator++(int) { return data++; }
-		const_iterator& operator++() { ++data; return *this; }
-		const_iterator  operator--(int) { return data--; }
-		const_iterator& operator--() { --data; return *this; }
-		const reference operator* () { return *data; }
-		const pointer   operator->() { return data; }
-		const_iterator  operator+ (difference_type v) { return data + v; }
-		const_iterator  operator- (difference_type v) { return data - v; }
-		difference_type  operator+ (const_iterator other) { return data + other.data; }
-		difference_type  operator- (const_iterator other) { return data - other.data; }
-		const_iterator& operator+= (difference_type v) { data += v; return *this; }
-		const_iterator& operator-= (difference_type v) { data -= v; return *this; }
-		bool	  operator< (const const_iterator& other) const { return (data - other.data) < 0; }
-		bool	  operator> (const const_iterator& other) const { return (data - other.data) > 0; }
-		bool      operator==(const const_iterator& rhs) const { return data == rhs.data; }
-		bool      operator!=(const const_iterator& rhs) const { return data != rhs.data; }
-		bool	  operator<= (const const_iterator& other) const { return (data == other.data) || (data < other.data); }
-		bool	  operator>= (const const_iterator& other) const { return (data == other.data) || (data > other.data); }
+		const_iterator& operator=(const_iterator con) { data_ = con.data_; return *this; }
+		const_iterator& operator=(pointer pos) { data_ = pos; return *this; }
+		const_iterator  operator++(int) { const_iterator temp(data_++); return temp; }
+		const_iterator& operator++() { ++data_; return *this; }
+		const_iterator  operator--(int) { const_iterator temp(data_--); return temp; }
+		const_iterator& operator--() { --data_; return *this; }
+		const_reference operator* () const { return *data_; }
+		const_pointer   operator->() const { return data_; }
+		const_iterator  operator+ (difference_type v) { return data_ + v; }
+		const_iterator  operator- (difference_type v) { return data_ - v; }
+		difference_type  operator+ (const_iterator other) { return data_ + other.data_; }
+		difference_type  operator- (const_iterator other) { return data_ - other.data_; }
+		const_iterator& operator+= (difference_type v) { data_ += v; return *this; }
+		const_iterator& operator-= (difference_type v) { data_ -= v; return *this; }
+		bool	  operator< (const const_iterator& other) const { return (data_ - other.data_) < 0; }
+		bool	  operator> (const const_iterator& other) const { return (data_ - other.data_) > 0; }
+		bool      operator==(const const_iterator& rhs) const { return data_ == rhs.data_; }
+		bool      operator!=(const const_iterator& rhs) const { return data_ != rhs.data_; }
+		bool	  operator<= (const const_iterator& other) const { return (data_ == other.data_) || (data_ < other.data_); }
+		bool	  operator>= (const const_iterator& other) const { return (data_ == other.data_) || (data_ > other.data_); }
 	};
 public:
 	typedef T value_t;
@@ -97,24 +99,24 @@ public:
 	typedef std::reverse_iterator<iterator> reverse_iterator;
 	typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
 private:
-	size_type vecSize;
-	size_type vecCap;
-	pointer elements;
-	iterator begPtr, endPtr;
+	size_type vecSize_;
+	size_type vecCap_;
+	pointer elements_;
+	iterator begPtr_, endPtr_;
 public:
-	MyVector<value_t>(): vecSize(0), vecCap(0), elements(nullptr) { begPtr = endPtr = elements; }
-	MyVector<value_t>(size_type cap) : vecSize(0), vecCap(cap) 
+	MyVector<value_t>(): vecSize_(0), vecCap_(0), elements_(nullptr) { begPtr_ = endPtr_ = elements_; }
+	MyVector<value_t>(size_type cap) : vecSize_(0), vecCap_(cap) 
 	{ 
-		elements = new value_t[vecCap]; 
-		iterator temp(elements);
-		begPtr = endPtr = temp;
+		elements_ = new value_t[vecCap_]; 
+		iterator temp(elements_);
+		begPtr_ = endPtr_ = temp;
 	}
-	~MyVector<value_t>() { if (elements) delete[] elements; }
+	~MyVector<value_t>() { if (elements_) delete[] elements_; }
 	
 	// capacity functions
-	bool		empty() const { return vecSize == 0; }
-	size_type	size() const { return vecSize; }
-	size_type	capacity() const { return vecCap; }
+	bool		empty() const { return vecSize_ == 0; }
+	size_type	size() const { return vecSize_; }
+	size_type	capacity() const { return vecCap_; }
 	void		shrink_to_fit();
 	void		resize(size_type n);
 	void		resize(size_type n, value_t const& val);
@@ -143,12 +145,12 @@ public:
 	void clear();
 
 	// iterators
-	iterator begin() { return begPtr; }
-	iterator end() { return endPtr; }
-	const_iterator cbegin() { return const_iterator(begPtr); }
-	const_iterator cend() { return const_iterator(endPtr); }
-	reverse_iterator rbegin() { return endPtr; }
-	reverse_iterator rend() { return begPtr; }
+	iterator begin() { return begPtr_; }
+	iterator end() { return endPtr_; }
+	const_iterator cbegin() { return const_iterator(begPtr_); }
+	const_iterator cend() { return const_iterator(endPtr_); }
+	reverse_iterator rbegin() { return endPtr_; }
+	reverse_iterator rend() { return begPtr_; }
 	const_reverse_iterator crbegin() { return const_reverse_iterator(rbegin()); }
 	const_reverse_iterator crend() { return const_reverse_iterator(rend()); }
 
@@ -166,8 +168,8 @@ private:
 template<typename value_t>
 void MyVector<value_t>::shrink_to_fit()
 {
-	vecCap = vecSize;
-	resizeVector(vecCap);
+	vecCap_ = vecSize_;
+	resizeVector(vecCap_);
 	return;
 }
 
@@ -180,28 +182,28 @@ void MyVector<value_t>::shrink_to_fit()
 template<typename value_t>
 void MyVector<value_t>::resize(size_type n)
 {
-	if (n > vecCap) 
+	if (n > vecCap_) 
 	{
 		resizeVector(n);
-		for (size_t i = vecSize; i < n; ++i)
+		for (size_t i = vecSize_; i < n; ++i)
 		{
 			value_t v{};
 			push_back(v);
 		}
-		vecSize = n;
+		vecSize_ = n;
 	}
-	else if (n > vecSize && n <= vecCap) 
+	else if (n > vecSize_ && n <= vecCap_) 
 	{
-		for (size_t i = vecSize; i < n; ++i)
+		for (size_t i = vecSize_; i < n; ++i)
 		{
 			value_t v{};
 			push_back(v);
 		}
-		vecSize = n;
+		vecSize_ = n;
 	}
-	else if (n < vecSize)
+	else if (n < vecSize_)
 	{
-		vecSize = n;
+		vecSize_ = n;
 		rebuildVector();
 	}
 	return;
@@ -216,22 +218,22 @@ void MyVector<value_t>::resize(size_type n)
 template<typename value_t>
 void MyVector<value_t>::resize(size_type n, value_t const & val)
 {
-	if (n > vecCap) 
+	if (n > vecCap_) 
 	{
 		resizeVector(n);
-		for (size_type i = vecSize; i < n; ++i)
+		for (size_type i = vecSize_; i < n; ++i)
 			push_back(val);
-		vecSize = n;
+		vecSize_ = n;
 	}
-	else if(n > vecSize && n <= vecCap)
+	else if(n > vecSize_ && n <= vecCap_)
 	{
-		for (size_type i = vecSize; i < n; ++i)
+		for (size_type i = vecSize_; i < n; ++i)
 			push_back(val);
-		vecSize = n;
+		vecSize_ = n;
 	}
-	else if (n < vecSize)
+	else if (n < vecSize_)
 	{
-		vecSize = n;
+		vecSize_ = n;
 		rebuildVector();
 	}
 	// nothing else to be done, n can only be the size of vecSize
@@ -247,9 +249,9 @@ void MyVector<value_t>::resize(size_type n, value_t const & val)
 template<typename value_t>
 typename MyVector<value_t>::reference MyVector<value_t>::operator[](size_type index)
 {
-	if (index < 0 || index > vecSize - 1)
+	if (index < 0 || index > vecSize_ - 1)
 		throw out_of_range("Out of scope");
-	return elements[index];
+	return elements_[index];
 }
 
 /**
@@ -261,9 +263,9 @@ typename MyVector<value_t>::reference MyVector<value_t>::operator[](size_type in
 template<typename value_t>
 typename MyVector<value_t>::reference MyVector<value_t>::at(size_type index)
 {
-	if (index < 0 || index > vecSize - 1)
+	if (index < 0 || index > vecSize_ - 1)
 		throw out_of_range("Out of scope");
-	return elements[index];
+	return elements_[index];
 }
 
 /**
@@ -275,7 +277,7 @@ typename MyVector<value_t>::reference MyVector<value_t>::at(size_type index)
 template<typename value_t>
 value_t MyVector<value_t>::front()
 {
-	return elements[0];
+	return elements_[0];
 }
 
 /**
@@ -287,13 +289,13 @@ value_t MyVector<value_t>::front()
 template<typename value_t>
 value_t MyVector<value_t>::back()
 {
-	return elements[vecSize - 1];
+	return elements_[vecSize_ - 1];
 }
 
 template<typename value_t>
 typename MyVector<value_t>::pointer MyVector<value_t>::data() noexcept
 {
-	return elements;
+	return elements_;
 }
 
 /**
@@ -347,17 +349,17 @@ void MyVector<value_t>::assign(std::initializer_list<value_t> list)
 template<typename value_t>
 void MyVector<value_t>::push_back(const value_t & val)
 {
-	++vecSize;
-	if (!elements)		// if vector has not been initialised
+	++vecSize_;
+	if (!elements_)		// if vector has not been initialised
 	{
-		elements = new value_t[1];
-		vecCap = vecSize;
-		begPtr = endPtr = elements;
+		elements_ = new value_t[1];
+		vecCap_ = vecSize_;
+		begPtr_ = endPtr_ = elements_;
 	}
-	if (vecSize > vecCap)
-		resizeVector(vecCap * 2);
-	elements[vecSize - 1] = val;
-	++endPtr;
+	if (vecSize_ > vecCap_)
+		resizeVector(vecCap_ * 2);
+	elements_[vecSize_ - 1] = val;
+	++endPtr_;
 	return;
 }
 
@@ -370,12 +372,12 @@ void MyVector<value_t>::push_back(const value_t & val)
 template<typename value_t>
 void MyVector<value_t>::pop_back()
 {
-	if (vecSize > 0) 
+	if (vecSize_ > 0) 
 	{
 		value_t val{};
-		elements[vecSize - 1] = val;
-		--vecSize;
-		--endPtr;
+		elements_[vecSize_ - 1] = val;
+		--vecSize_;
+		--endPtr_;
 	}
 	return;
 }
@@ -389,13 +391,13 @@ void MyVector<value_t>::pop_back()
 template<typename value_t>
 typename MyVector<value_t>::iterator MyVector<value_t>::insert(const_iterator position, const value_t & val)
 {
-	if (begPtr == endPtr)	// elements is not initialised
-		return begPtr;
+	if (begPtr_ == endPtr_)	// elements is not initialised
+		return begPtr_;
 
 	iterator temp = begin();
 	std::ptrdiff_t diff = position - temp;
 	
-	if (diff > (endPtr - 1) - temp)
+	if (diff > (endPtr_ - 1) - temp)
 		throw out_of_range("Const Iterator references non-existent position in vector. Try push_back().");
 	
 	temp += diff;
@@ -415,7 +417,7 @@ typename MyVector<value_t>::iterator MyVector<value_t>::insert(const_iterator po
 	iterator temp = begin();
 	std::ptrdiff_t diff = position - temp;
 	
-	if (diff > (endPtr - 1) - temp)
+	if (diff > (endPtr_ - 1) - temp)
 		throw out_of_range("Const Iterator references non-existent position in vector. Try push_back().");
 
 	temp += diff;
@@ -423,21 +425,21 @@ typename MyVector<value_t>::iterator MyVector<value_t>::insert(const_iterator po
 	size_type i = 0;
 	while (i < n)
 	{
-		if (vecSize == 0)
+		if (vecSize_ == 0)
 		{
 			resizeVector(1);
-			temp = begPtr;
+			temp = begPtr_;
 		}
 		else
 		{
-			resizeVector(vecCap * 2);
-			temp = begPtr + diff + i;
+			resizeVector(vecCap_ * 2);
+			temp = begPtr_ + diff + i;
 		}
 			
-		if (temp == endPtr)  // if we've hit the end of the vector
+		if (temp == endPtr_)  // if we've hit the end of the vector
 		{
-			++vecSize;
-			++endPtr;
+			++vecSize_;
+			++endPtr_;
 		}
 		*temp = val;
 		++temp;
@@ -458,7 +460,7 @@ typename MyVector<value_t>::iterator MyVector<value_t>::insert(const_iterator po
 	iterator temp = begin();
 	std::ptrdiff_t diff = position - temp;
 	
-	if (diff > (endPtr - 1) - temp)
+	if (diff > (endPtr_ - 1) - temp)
 		throw out_of_range("Const Iterator references non-existent position in vector. Try push_back().");
 
 	temp += diff;
@@ -466,21 +468,21 @@ typename MyVector<value_t>::iterator MyVector<value_t>::insert(const_iterator po
 	size_type i = 0;
 	for (const_iterator it = first; it != last; ++it, ++temp, ++i)
 	{
-		if (vecSize == 0)
+		if (vecSize_ == 0)
 		{
 			resizeVector(1);
-			temp = begPtr;
+			temp = begPtr_;
 		}
 		else
 		{
-			resizeVector(vecCap * 2);
-			temp = begPtr + diff + i;
+			resizeVector(vecCap_ * 2);
+			temp = begPtr_ + diff + i;
 		}
 
-		if (temp == endPtr)  // if we've hit the end of the vector
+		if (temp == endPtr_)  // if we've hit the end of the vector
 		{
-			++vecSize;
-			++endPtr;
+			++vecSize_;
+			++endPtr_;
 		}
 		*temp = *it;
 	}
@@ -496,13 +498,13 @@ typename MyVector<value_t>::iterator MyVector<value_t>::insert(const_iterator po
 template<typename value_t>
 typename MyVector<value_t>::iterator MyVector<value_t>::insert(const_iterator position, value_t && val)
 {
-	if (begPtr == endPtr)
-		return begPtr;
+	if (begPtr_ == endPtr_)
+		return begPtr_;
 
 	iterator temp = begin();
 	std::ptrdiff_t diff = position - temp;
 
-	if (diff > (endPtr - 1) - temp)
+	if (diff > (endPtr_ - 1) - temp)
 		throw out_of_range("Const Iterator references non-existent position in vector. Try push_back().");
 	
 	temp += diff;
@@ -522,7 +524,7 @@ typename MyVector<value_t>::iterator MyVector<value_t>::insert(const_iterator po
 	iterator temp = begin();
 	std::ptrdiff_t diff = position - temp;
 
-	if ((diff > (endPtr - 1) - temp) && vecSize > 0)
+	if ((diff > (endPtr_ - 1) - temp) && vecSize_ > 0)
 		throw out_of_range("Const Iterator references non-existent position in vector.");
 
 	temp += diff;
@@ -530,24 +532,24 @@ typename MyVector<value_t>::iterator MyVector<value_t>::insert(const_iterator po
 	size_type i = 0;
 	for (auto x : il)
 	{
-		if (vecSize == vecCap) // sometimes endPtr is not the real end; vector may have deleted element
+		if (vecSize_ == vecCap_) // sometimes endPtr is not the real end; vector may have deleted element
 		{
-			if (vecSize == 0)
+			if (vecSize_ == 0)
 			{
 				resizeVector(1);
-				temp = begPtr;
+				temp = begPtr_;
 			}
 			else
 			{
-				resizeVector(vecCap * 2);
-				temp = begPtr + diff + i;
+				resizeVector(vecCap_ * 2);
+				temp = begPtr_ + diff + i;
 			}
 		}
 
-		if (temp == endPtr)  // if we've hit the end of the vector
+		if (temp == endPtr_)  // if we've hit the end of the vector
 		{
-			++vecSize;
-			++endPtr;
+			++vecSize_;
+			++endPtr_;
 		}
 		*temp = x;
 		++temp;
@@ -565,21 +567,21 @@ typename MyVector<value_t>::iterator MyVector<value_t>::insert(const_iterator po
 template<typename value_t>
 typename MyVector<value_t>::iterator MyVector<value_t>::erase(const_iterator position)
 {
-	if (begPtr == endPtr)
-		return begPtr;
+	if (begPtr_ == endPtr_)
+		return begPtr_;
 
 	iterator temp = begin();
 	std::ptrdiff_t diff = position - temp;
 
-	if (diff > (endPtr - 1) - temp)
+	if (diff > (endPtr_ - 1) - temp)
 		throw out_of_range("Const Iterator references non-existent position in vector.");
 
 	temp += diff;
 
-	for (temp += 1; temp != endPtr; ++temp)
+	for (temp += 1; temp != endPtr_; ++temp)
 		*(temp - 1) = *temp;
 
-	--vecSize;
+	--vecSize_;
 	rebuildVector();
 	iterator ret = begin() + diff;
 	return ret;
@@ -594,31 +596,31 @@ typename MyVector<value_t>::iterator MyVector<value_t>::erase(const_iterator pos
 template<typename value_t>
 typename MyVector<value_t>::iterator MyVector<value_t>::erase(const_iterator first, const_iterator last)
 {
-	if (begPtr == endPtr)
-		return begPtr;
+	if (begPtr_ == endPtr_)
+		return begPtr_;
 
 	iterator itFirst = begin();
 	std::ptrdiff_t diffOne = first - itFirst;
 	
-	if (diffOne > (endPtr - 1) - itFirst)
+	if (diffOne > (endPtr_ - 1) - itFirst)
 		throw out_of_range("Const Iterator references non-existent position in vector.");
 	itFirst += diffOne;
 
 	iterator itLast = itFirst;
 	std::ptrdiff_t diffTwo = last - itLast;
 
-	if (diffTwo > (endPtr - 1) - itLast)
+	if (diffTwo > (endPtr_ - 1) - itLast)
 		throw out_of_range("Const Iterator references non-existent position in vector.");
 	itLast += diffTwo;
 
 	std::ptrdiff_t deleteRange = diffTwo + 1;	// have to account for first iterator (eg. deleting elements 0-3 is 4 elements)
 
-	for(iterator it = itLast + 1; it < endPtr; ++it)	// move all elements ahead of the deleted elements to the left
+	for(iterator it = itLast + 1; it < endPtr_; ++it)	// move all elements ahead of the deleted elements to the left
 		*(it - deleteRange) = *it;
 
-	vecSize -= deleteRange;
+	vecSize_ -= deleteRange;
 	rebuildVector();
-	iterator ret = begPtr + diffOne;
+	iterator ret = begPtr_ + diffOne;
 	return ret;
 }
 
@@ -645,12 +647,12 @@ void MyVector<value_t>::swap(MyVector<value_t>& v)
 template<typename value_t>
 void MyVector<value_t>::clear()
 {
-	vecSize = 0;
-	vecCap = 0;
-	delete[] elements;
-	elements = nullptr;
-	iterator temp(elements);
-	begPtr = endPtr = temp;
+	vecSize_ = 0;
+	vecCap_ = 0;
+	delete[] elements_;
+	elements_ = nullptr;
+	iterator temp(elements_);
+	begPtr_ = endPtr_ = temp;
 }
 
 /**
@@ -665,14 +667,14 @@ void MyVector<value_t>::resizeVector(size_type newCap)
 	pointer newElements = new value_t[newCap];
 	
 	pointer newElCopy = newElements;
-	for (iterator beg = begPtr; beg != endPtr; ++beg, ++newElCopy)	// copy everything from old element container to new element container
+	for (iterator beg = begPtr_; beg != endPtr_; ++beg, ++newElCopy)	// copy everything from old element container to new element container
 		*newElCopy = *beg;
 	
-	delete[] elements;
-	elements = newElements;
-	vecCap = newCap;
-	begPtr = elements;
-	endPtr = elements + vecSize;
+	delete[] elements_;
+	elements_ = newElements;
+	vecCap_ = newCap;
+	begPtr_ = elements_;
+	endPtr_ = elements_ + vecSize_;
 	return;
 }
 
@@ -685,20 +687,20 @@ void MyVector<value_t>::resizeVector(size_type newCap)
 template<typename value_t>
 void MyVector<value_t>::rebuildVector()
 {
-	pointer remElements = new value_t[vecSize];
-	pointer curElements = elements;
+	pointer remElements = new value_t[vecSize_];
+	pointer curElements = elements_;
 	size_t i = 0;
 	// put all of the elements into an array
-	for (curElements; i < vecSize; ++i, ++curElements)
+	for (curElements; i < vecSize_; ++i, ++curElements)
 		remElements[i] = *curElements;
 
-	delete[] elements;
-	elements = new value_t[vecCap];
+	delete[] elements_;
+	elements_ = new value_t[vecCap_];
 	// put all of the elements back into the array
-	for (i = 0; i < vecSize; ++i)
-		elements[i] = remElements[i];
+	for (i = 0; i < vecSize_; ++i)
+		elements_[i] = remElements[i];
 
-	begPtr = elements;
-	endPtr = elements + vecSize;
+	begPtr_ = elements_;
+	endPtr_ = elements_ + vecSize_;
 	delete[] remElements;
 }
